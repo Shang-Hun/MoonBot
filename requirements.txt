@@ -1,3 +1,4 @@
 discord.py
 discord-components
 psutil
+Pillow
