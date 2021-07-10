@@ -43,7 +43,7 @@ class Main(commands.Cog):
         owner = await self.bot.fetch_user(617658847552864256)
         ownera = owner.avatar_url
 
-        embed=discord.Embed(title="About me", description=f"**{self.bot.user}** is a bot with **leveling** and **moderator** functions!",
+        embed=discord.Embed(title="About Me", description=f"**{self.bot.user}** is a bot with **leveling** and **moderator** functions!",
          color=0xacacc1)
         embed.set_thumbnail(url=self.bot.user.avatar_url)
         embed.add_field(name="🆔ID", value=self.bot.user.id, inline=True)
@@ -53,7 +53,7 @@ class Main(commands.Cog):
         await ctx.send(
                 embed=embed,
                 components = [
-                    [Button(style=ButtonStyle.URL, label = "🔗 Invite", url=invite),
+                    [Button(style=ButtonStyle.gray, label = "🔗 Invite", disabled=True),
                     Button(style=ButtonStyle.gray, label = "Support Server", disabled=True, emoji="⚔"),
                     Button(style=ButtonStyle.gray, label = "Vote", disabled=True, emoji="🎟")]
                 ]

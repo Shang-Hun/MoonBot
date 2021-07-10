@@ -49,6 +49,8 @@ class TextLeveling(commands.Cog, name='Leveling'):
             result = cursor.fetchone()
             if result is None:
                 return
+            # elif str(result[0]) == 'disabled':
+            #     return
             elif str(result[0]) == 'enabled':
                 cursor.execute(f"SELECT user_id, exp, level FROM glevel WHERE guild_id = '{message.guild.id}' and user_id = '{message.author.id}'")
                 result1 = cursor.fetchone()
@@ -102,7 +104,15 @@ class TextLeveling(commands.Cog, name='Leveling'):
     @commands.guild_only()
     async def rank(self, ctx, user:discord.User=None):
         user = ctx.author or id if not user else user
-        if user is None:
+        main1 = sqlite3.connect('db/main.db')
+        cursor = main1.cursor()
+        cursor.execute(f"SELECT enabled FROM glevel WHERE guild_id = '{ctx.guild.id}'")
+        result = cursor.fetchone()
+        if result is None:
+            await ctx.send(f'{ctx.author.mention} this server\'s levelsys is disabled!')
+        # elif str(result[0]) == 'disabled':
+        #     await ctx.send(f'{ctx.author.mention} this server\'s levelsys is disabled!')
+        elif user is None:
             main = sqlite3.connect('db/main.db')
             cursor = main.cursor()
             cursor.execute(f"SELECT exp, level FROM glevel WHERE guild_id = '{ctx.guild.id}' and user_id = '{ctx.message.author.id}'")
@@ -154,9 +164,9 @@ class TextLeveling(commands.Cog, name='Leveling'):
                     draw.ellipse((162, 162, 206, 206), fill="747f8d")
 
                 # Working with Fonts
-                big_font = ImageFont.FreeTypeFont("db/ABeeZee-Regular.otf", 60)
-                medium_font = ImageFont.FreeTypeFont("db/ABeeZee-Regular.otf", 40)
-                small_font = ImageFont.FreeTypeFont("db/ABeeZee-Regular.otf", 30)
+                big_font = ImageFont.FreeTypeFont("db/setofont.otf", 60)
+                medium_font = ImageFont.FreeTypeFont("db/setofont.otf", 40)
+                small_font = ImageFont.FreeTypeFont("db/setofont.otf", 30)
 
                 # Placing Right Upper Part
                 text_size = draw.textsize(str(lvl), font=big_font)
@@ -286,9 +296,9 @@ class TextLeveling(commands.Cog, name='Leveling'):
                     draw.ellipse((162, 162, 206, 206), fill="747f8d")
 
                 # Working with Fonts
-                big_font = ImageFont.FreeTypeFont("db/ABeeZee-Regular.otf", 60)
-                medium_font = ImageFont.FreeTypeFont("db/ABeeZee-Regular.otf", 40)
-                small_font = ImageFont.FreeTypeFont("db/ABeeZee-Regular.otf", 30)
+                big_font = ImageFont.FreeTypeFont("db/setofont.otf", 60)
+                medium_font = ImageFont.FreeTypeFont("db/setofont.otf", 40)
+                small_font = ImageFont.FreeTypeFont("db/setofont.otf", 30)
 
                 # Placing Right Upper Part
                 text_size = draw.textsize(str(lvl), font=big_font)
@@ -431,9 +441,9 @@ class TextLeveling(commands.Cog, name='Leveling'):
                     draw.ellipse((162, 162, 206, 206), fill="747f8d")
 
                 # Working with Fonts
-                big_font = ImageFont.FreeTypeFont("db/ABeeZee-Regular.otf", 60)
-                medium_font = ImageFont.FreeTypeFont("db/ABeeZee-Regular.otf", 40)
-                small_font = ImageFont.FreeTypeFont("db/ABeeZee-Regular.otf", 30)
+                big_font = ImageFont.FreeTypeFont("db/setofont.otf", 60)
+                medium_font = ImageFont.FreeTypeFont("db/setofont.otf", 40)
+                small_font = ImageFont.FreeTypeFont("db/setofont.otf", 30)
 
                 # Placing Right Upper Part
                 text_size = draw.textsize(str(lvl), font=big_font)
@@ -563,9 +573,9 @@ class TextLeveling(commands.Cog, name='Leveling'):
                     draw.ellipse((162, 162, 206, 206), fill="747f8d")
         
                 # Working with Fonts
-                big_font = ImageFont.FreeTypeFont("db/ABeeZee-Regular.otf", 60)
-                medium_font = ImageFont.FreeTypeFont("db/ABeeZee-Regular.otf", 40)
-                small_font = ImageFont.FreeTypeFont("db/ABeeZee-Regular.otf", 30)
+                big_font = ImageFont.FreeTypeFont("db/setofont.otf", 60)
+                medium_font = ImageFont.FreeTypeFont("db/setofont.otf", 40)
+                small_font = ImageFont.FreeTypeFont("db/setofont.otf", 30)
 
                 # Placing Right Upper Part
                 text_size = draw.textsize(str(lvl), font=big_font)
@@ -660,30 +670,39 @@ class TextLeveling(commands.Cog, name='Leveling'):
     @commands.command(aliases=['lb'])
     @commands.guild_only()
     async def leaderboard(self, ctx):
-        main = sqlite3.connect('db/main.db')
-        cursor = main.cursor()
-        cursor.execute(f"SELECT user_id, exp, level FROM glevel WHERE guild_id = '{ctx.guild.id}' ORDER BY level DESC, exp DESC")
-        result = cursor.fetchall()
-        owner = await self.bot.fetch_user(617658847552864256)
-        ownera = owner.avatar_url
-        v = 1
-        embed = discord.Embed(title="**Leaderboard Top 10**", description=f"Server: __{ctx.guild.name}__",
-         color=discord.Color.blurple(), timestamp=datetime.datetime.utcnow())
-        embed.set_footer(text=f'By {owner}', icon_url=ownera)
-        for result in result:
-            if v > 10:
-                break
+        main1 = sqlite3.connect('db/main.db')
+        cursor = main1.cursor()
+        cursor.execute(f"SELECT enabled FROM glevel WHERE guild_id = '{ctx.guild.id}'")
+        result = cursor.fetchone()
+        if result is None:
+            await ctx.send(f'{ctx.author.mention} this server\'s levelsys is disabled!')
+        # elif str(result[0]) == 'disabled':
+        #     await ctx.send(f'{ctx.author.mention} this server\'s levelsys is disabled!')
+        elif str(result[0]) == 'enabled':
+            main = sqlite3.connect('db/main.db')
+            cursor = main.cursor()
+            cursor.execute(f"SELECT user_id, exp, level FROM glevel WHERE guild_id = '{ctx.guild.id}' ORDER BY level DESC, exp DESC")
+            result = cursor.fetchall()
+            owner = await self.bot.fetch_user(617658847552864256)
+            ownera = owner.avatar_url
+            v = 1
+            embed = discord.Embed(title="**Leaderboard Top 10**", description=f"Server: __{ctx.guild.name}__",
+            color=discord.Color.blurple(), timestamp=datetime.datetime.utcnow())
+            embed.set_footer(text=f'By {owner}', icon_url=ownera)
+            for result in result:
+                if v > 10:
+                    break
 
-            if result[0] == None:
-                continue
-            
-            user = self.bot.get_user(int(result[0]))
-            lvl = result[2]
-            exp = result[1]
-            embed.add_field(name=f"**{v}.{str(user)}**", value=f"Lvl: {lvl} Exp: {exp}", inline=False)
-            v += 1
+                if result[0] == None:
+                    continue
+                
+                user = self.bot.get_user(int(result[0]))
+                lvl = result[2]
+                exp = result[1]
+                embed.add_field(name=f"**{v}.{str(user)}**", value=f"Lvl: {lvl} Exp: {exp}", inline=False)
+                v += 1
 
-        await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
 
 
 def setup(bot):
