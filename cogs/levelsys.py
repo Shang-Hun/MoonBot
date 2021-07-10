@@ -102,7 +102,7 @@ class TextLeveling(commands.Cog, name='Leveling'):
 
     @commands.command()
     @commands.guild_only()
-    async def rank(self, ctx, user:discord.User=None):
+    async def rank(self, ctx, user:discord.Member=None):
         user = ctx.author or id if not user else user
         main1 = sqlite3.connect('db/main.db')
         cursor = main1.cursor()
