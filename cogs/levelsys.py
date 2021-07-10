@@ -94,6 +94,7 @@ class TextLeveling(commands.Cog, name='Leveling'):
                 return
 
     @commands.command()
+    @commands.guild_only()
     async def rank(self, ctx, user:discord.User=None):
         main = sqlite3.connect('db/main.db')
         cursor = main.cursor()
@@ -168,6 +169,7 @@ class TextLeveling(commands.Cog, name='Leveling'):
             main.close()
 
     @commands.command(aliases=['lb'])
+    @commands.guild_only()
     async def leaderboard(self, ctx):
         main = sqlite3.connect('db/main.db')
         cursor = main.cursor()
