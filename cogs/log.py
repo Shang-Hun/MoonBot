@@ -30,7 +30,7 @@ class Log(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        main = sqlite3.connect('Leveling/main.db')
+        main = sqlite3.connect('db/main.db')
         cursor = main.cursor()
         cursor.execute(f"SELECT enabled FROM glevel WHERE guild_id = '{member.guild.id}'")
         result = cursor.fetchone()
