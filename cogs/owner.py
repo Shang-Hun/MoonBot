@@ -55,28 +55,6 @@ class Owner(commands.Cog):
             embed.set_footer(text='By ShangHun#4475', icon_url=ownera)
             await ctx.send(embed=embed)
 
-    @commands.command()
-    @commands.is_owner()
-    async def lvl(self, ctx, of):
-        guild = ctx.guild
-        main = sqlite3.connect('db/main.db')
-        cursor = main.cursor()
-        cursor.execute(f"SELECT enabled FROM glevel WHERE guild_id = '{guild.id}'")
-        if of == 'on':
-                sql = ("UPDATE glevel SET enabled = ? WHERE guild_id = ?")
-                val = ('enabled', str(guild.id))
-                cursor.execute(sql, val)
-                main.commit()
-                await ctx.send(f"enabled levelsys for this server!")
-        elif of == 'off':
-                sql = ("UPDATE glevel SET disabled = ? WHERE guild_id = ?")
-                val = ('disabled', str(guild.id))
-                cursor.execute(sql, val)
-                main.commit()
-                await ctx.send(f"disabled levelsys for this server!")
-        cursor.close()
-        main.close()
-
 
 def setup(bot):
     bot.add_cog(Owner(bot))
