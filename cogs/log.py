@@ -25,6 +25,11 @@ class Log(commands.Cog):
             val = ('enabled', str(guild.id))
             cursor.execute(sql, val)
             main.commit()
+        else:
+            sql = ("UPDATE glevel SET enabled = ? WHERE guild_id = ?")
+            val = ('enabled', str(guild.id))
+            cursor.execute(sql, val)
+            main.commit()
         cursor.close()
         main.close()
 
