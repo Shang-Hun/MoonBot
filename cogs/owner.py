@@ -2,6 +2,7 @@ from datetime import datetime
 import discord
 import os
 import datetime
+import sqlite3
 
 from discord.ext import commands
 from discord.ext.commands.core import command
@@ -53,6 +54,28 @@ class Owner(commands.Cog):
             description="Succeeded Reload<a:verify:748461028253368412>", color=discord.Color.gold())
             embed.set_footer(text='By ShangHun#4475', icon_url=ownera)
             await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.is_owner()
+    async def lvl(self, ctx, of):
+        guild = ctx.guild
+        main = sqlite3.connect('db/main.db')
+        cursor = main.cursor()
+        cursor.execute(f"SELECT enabled FROM glevel WHERE guild_id = '{guild.id}'")
+        if of == 'on':
+                sql = ("UPDATE glevel SET enabled = ? WHERE guild_id = ?")
+                val = ('enabled', str(guild.id))
+                cursor.execute(sql, val)
+                main.commit()
+                await ctx.send(f"enabled levelsys for this server!")
+        elif of == 'off':
+                sql = ("UPDATE glevel SET enabled = ? WHERE guild_id = ?")
+                val = ('disabled', str(guild.id))
+                cursor.execute(sql, val)
+                main.commit()
+                await ctx.send(f"disabled levelsys for this server!")
+        cursor.close()
+        main.close()
 
 
 def setup(bot):
