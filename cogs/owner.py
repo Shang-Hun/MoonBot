@@ -69,7 +69,7 @@ class Owner(commands.Cog):
                 main.commit()
                 await ctx.send(f"enabled levelsys for this server!")
         elif of == 'off':
-                sql = ("UPDATE glevel SET enabled = ? WHERE guild_id = ?")
+                sql = ("UPDATE glevel SET disabled = ? WHERE guild_id = ?")
                 val = ('disabled', str(guild.id))
                 cursor.execute(sql, val)
                 main.commit()
