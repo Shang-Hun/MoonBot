@@ -3,8 +3,6 @@ import os
 import sqlite3
 
 from discord.ext import commands
-from dotenv import load_dotenv
-from os import getenv
 from discord.ext.commands import when_mentioned_or
 
 intents = discord.Intents.all()
@@ -27,8 +25,6 @@ def get_prefix(bot, message):
 
 bot = commands.Bot(command_prefix=get_prefix, intents=intents)
 bot.remove_command('help')
-load_dotenv()
-token = getenv("TOKEN")
 
 @bot.event
 async def on_ready():
@@ -48,4 +44,4 @@ for filename in os.listdir('./cogs'):
 
 
 if __name__ == "__main__":
-    bot.run(os.environ['token'])
+    bot.run('ODU5Mzc1OTk4NDEwODE3NTU2.YNryRA.qye03a9tLPUtIG6y0cGIzv5VW1E')
