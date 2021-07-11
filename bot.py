@@ -1,17 +1,39 @@
 import discord
 import os
+import sqlite3
 
 from discord.ext import commands
+from dotenv import load_dotenv
+from os import getenv
+from discord.ext.commands import when_mentioned_or
 
 intents = discord.Intents.all()
 
-bot = commands.Bot(command_prefix='//', intents=intents)
-# bot.remove_command('help')
+def get_prefix(bot, message):
+    setting = sqlite3.connect('db/setting.db')
+    cursor = setting.cursor()
+    cursor.execute(f"SELECT prefix FROM settings WHERE guild_id = '{message.guild.id}'")
+    result = cursor.fetchone()
+    if result is None:
+        prefix = '>'
+    if str(result[0]) == '>':
+        prefix = '>'
+    if str(result[0]) is None:
+        prefix = '>'
+    elif str(result[0]) is not None:
+        prefix = str(result[0])
+
+    return when_mentioned_or(prefix)(bot, message)
+
+bot = commands.Bot(command_prefix=get_prefix, intents=intents)
+bot.remove_command('help')
+load_dotenv()
+token = getenv("TOKEN")
 
 @bot.event
 async def on_ready():
     await bot.change_presence(status=discord.Status.idle,
-    activity=discord.Activity(type=discord.ActivityType.playing, name=f"🌙"))
+    activity=discord.Activity(type=discord.ActivityType.watching, name=f"🌙"))
     print('------')
     print('Online! botinfo:')
     print(f'Bot Owner: ShangHun✧‧₊˚#4475')
@@ -26,4 +48,4 @@ for filename in os.listdir('./cogs'):
 
 
 if __name__ == "__main__":
-    bot.run('ODU5Mzc1OTk4NDEwODE3NTU2.YNryRA.qye03a9tLPUtIG6y0cGIzv5VW1E')
+    bot.run(os.environ['token'])
