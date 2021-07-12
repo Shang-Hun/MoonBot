@@ -205,6 +205,9 @@ class Mod(commands.Cog):
                 cursor.execute(sql, val)
                 setting.commit()
                 await ctx.send(f'Prefix has been changed to `{p}` on this server')
+                
+            cursor.close()
+            setting.close()
 
     @commands.command(name="set_welcome_channel", description='Set up or change welcome channel on this server', usage='>set_welcome_channel [channel] | >swc [channel]', aliases=['swc'])
     @commands.has_permissions(administrator=True)
