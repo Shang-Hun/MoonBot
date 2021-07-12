@@ -134,7 +134,7 @@ class Owner(commands.Cog):
                 val = ('>', str(ctx.guild.id))
                 cursor.execute(sql, val)
                 setting.commit()
-                await ctx.send(f'Prefix has reverted to `//`!')
+                await ctx.send(f'Prefix has reverted to `>`!')
         else:
             if p == str(result[0]):
                 await ctx.send(f'`{p}` is already the prefix of this server!')
@@ -145,6 +145,8 @@ class Owner(commands.Cog):
                 cursor.execute(sql, val)
                 setting.commit()
                 await ctx.send(f'Prefix has been changed to `{p}` on this server')
+            cursor.close()
+            setting.close()
 
     @commands.command()
     @commands.is_owner()
