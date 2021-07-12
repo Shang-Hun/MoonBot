@@ -18,7 +18,7 @@ def get_prefix(bot, message):
         prefix = '>'
     if str(result[0]) is None:
         prefix = '>'
-    elif str(result[0]) is not None:
+    if str(result[0]) is not None:
         prefix = str(result[0])
 
     return when_mentioned_or(prefix)(bot, message)
