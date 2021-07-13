@@ -4,6 +4,8 @@
 
 # MoonBot🌙
 
+##V0.5 BETA!
+
 > **By Shang-Hun**
 > 
 > **Discord ShangHun✧‧₊˚#4475**
