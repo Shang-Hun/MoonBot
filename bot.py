@@ -48,4 +48,4 @@ for filename in os.listdir('./cogs'):
 
 
 if __name__ == "__main__":
-    bot.run(cf['TOKEN])
+    bot.run(cf['TOKEN'])
