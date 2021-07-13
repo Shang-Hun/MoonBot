@@ -1,9 +1,13 @@
 import discord
 import os
 import sqlite3
+import json
 
 from discord.ext import commands
 from discord.ext.commands import when_mentioned_or
+
+with open("db/config.json", mode='r', encoding='utf8') as c:
+    cf = json.load(c)
 
 intents = discord.Intents.all()
 
@@ -44,4 +48,4 @@ for filename in os.listdir('./cogs'):
 
 
 if __name__ == "__main__":
-    bot.run('ODU5Mzc1OTk4NDEwODE3NTU2.YNryRA.qye03a9tLPUtIG6y0cGIzv5VW1E')
+    bot.run(cf['TOKEN])
