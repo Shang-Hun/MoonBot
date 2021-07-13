@@ -4,7 +4,7 @@
 
 # MoonBot🌙
 
-##V0.5 BETA!
+## V0.5 BETA!
 
 > **By Shang-Hun**
 > 
